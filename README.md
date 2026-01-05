@@ -1,5 +1,8 @@
 # IC Maintenance Management System
 
+> **🎉 Customer Portal Phase 1 Complete!** The platform is now running with a world-class UI.  
+> **Access**: [http://localhost:3000](http://localhost:3000) | **Demo**: customer@example.com / customer123
+
 A comprehensive SaaS solution for managing building maintenance operations with end-to-end workflow support for customers, internal staff, and trade specialists.
 
 ## 🏗️ System Overview

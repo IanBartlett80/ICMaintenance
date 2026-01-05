@@ -5,6 +5,12 @@ import './index.css';
 // Import API services
 import { authAPI, jobAPI, quoteAPI, dataAPI, notificationAPI, reportAPI } from './services/api';
 
+// Import Components
+import LandingPage from './components/LandingPage';
+import RegisterPage from './components/RegisterPage';
+import JobsPage from './components/JobsPage';
+import NewJobPage from './components/NewJobPage';
+
 // Auth Context
 const AuthContext = React.createContext();
 
@@ -88,46 +94,88 @@ function LoginPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div className="card" style={{ maxWidth: '400px', width: '100%' }}>
-        <h1 style={{ textAlign: 'center', color: '#2563eb', marginBottom: '24px' }}>IC Maintenance</h1>
-        <h2 style={{ textAlign: 'center', marginBottom: '24px' }}>Customer Portal</h2>
-        
-        {error && <div className="alert alert-error">{error}</div>}
-        
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
+    <div className="min-h-screen bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <Link to="/" className="text-2xl font-bold text-primary hover:text-primary-dark transition">
+            IC Maintenance
+          </Link>
+          <h1 className="text-4xl font-bold text-white mt-6">Sign In</h1>
+          <p className="text-neutral-400 mt-2">Welcome back to IC Maintenance</p>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="bg-neutral-800 border border-neutral-700 rounded-2xl p-8 space-y-6">
+          {error && (
+            <div className="p-4 bg-error/10 border border-error/30 rounded-lg text-error text-sm">
+              {error}
+            </div>
+          )}
+
+          <div>
+            <label htmlFor="email" className="block text-white font-medium mb-2">
+              Email
+            </label>
             <input
+              id="email"
               type="email"
-              className="form-control"
+              className="w-full px-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg text-white placeholder-neutral-400 focus:border-primary focus:outline-none transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
               required
             />
           </div>
           
-          <div className="form-group">
-            <label>Password</label>
+          <div>
+            <label htmlFor="password" className="block text-white font-medium mb-2">
+              Password
+            </label>
             <input
+              id="password"
               type="password"
-              className="form-control"
+              className="w-full px-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg text-white placeholder-neutral-400 focus:border-primary focus:outline-none transition"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
               required
             />
           </div>
           
-          <button type="submit" className="btn btn-primary" style={{ width: '100%' }} disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+          <button 
+            type="submit" 
+            className="w-full px-6 py-3 bg-primary hover:bg-primary-dark disabled:opacity-50 text-white rounded-lg font-semibold transition" 
+            disabled={loading}
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
         
-        <p style={{ textAlign: 'center', marginTop: '16px' }}>
-          Don't have an account? <Link to="/register">Register here</Link>
-        </p>
+        <div className="mt-6 space-y-3">
+          <div className="text-center">
+            <Link to="#" className="text-primary hover:text-primary-light text-sm">
+              Forgot your password?
+            </Link>
+          </div>
+          <div className="text-center text-neutral-400">
+            Don't have an account?{' '}
+            <Link to="/register" className="text-primary hover:text-primary-light">
+              Register your organization
+            </Link>
+          </div>
+        </div>
 
-        <div style={{ marginTop: '24px', padding: '12px', background: '#f3f4f6', borderRadius: '6px', fontSize: '12px' }}>
+        <div className="mt-8 p-4 bg-neutral-800/50 border border-neutral-700 rounded-lg text-center">
+          <p className="text-neutral-400 text-sm">
+            Need help?{' '}
+            <Link to="mailto:support@icmaintenance.com" className="text-primary hover:text-primary-light">
+              Contact support
+            </Link>
+          </p>
+        </div>
+
+        <div style={{ marginTop: '24px', padding: '12px', background: '#374151', borderRadius: '6px', fontSize: '12px', color: '#d1d5db' }}>
           <strong>Demo Account:</strong><br />
           Email: customer@example.com<br />
           Password: customer123
@@ -165,8 +213,11 @@ function DashboardPage() {
   if (loading) return <div className="loading">Loading...</div>;
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <div className="animate-fade-in">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard Overview</h1>
+        <p className="text-gray-600">Welcome back! Here's your maintenance summary.</p>
+      </div>
       
       <div className="grid grid-3" style={{ marginBottom: '24px' }}>
         <div className="stat-card" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
@@ -183,10 +234,59 @@ function DashboardPage() {
         </div>
       </div>
 
+      {/* Quick Actions */}
+      <div className="grid grid-2" style={{ marginBottom: '32px' }}>
+        <div className="card" style={{ background: 'linear-gradient(135deg, #0066CC 0%, #0052A3 100%)', color: 'white' }}>
+          <h3 style={{ margin: '0 0 12px 0', fontSize: '18px' }}>Submit New Request</h3>
+          <p style={{ margin: '0 0 16px 0', fontSize: '14px', opacity: 0.9 }}>
+            Create a new maintenance request and attach photos
+          </p>
+          <Link 
+            to="/jobs/new" 
+            className="btn" 
+            style={{ 
+              background: 'white', 
+              color: '#0066CC', 
+              display: 'inline-block',
+              textDecoration: 'none'
+            }}
+          >
+            New Request →
+          </Link>
+        </div>
+
+        <div className="card" style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #F59E0B 100%)', color: 'white' }}>
+          <h3 style={{ margin: '0 0 12px 0', fontSize: '18px' }}>View Reports</h3>
+          <p style={{ margin: '0 0 16px 0', fontSize: '14px', opacity: 0.9 }}>
+            Access comprehensive maintenance reports and analytics
+          </p>
+          <Link 
+            to="/reports" 
+            className="btn" 
+            style={{ 
+              background: 'white', 
+              color: '#FF6B35', 
+              display: 'inline-block',
+              textDecoration: 'none'
+            }}
+          >
+            View Reports →
+          </Link>
+        </div>
+      </div>
+
       <div className="card">
-        <h2>Recent Maintenance Requests</h2>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <h2 style={{ margin: 0 }}>Recent Maintenance Requests</h2>
+          <Link to="/jobs" style={{ color: '#0066CC', textDecoration: 'none', fontWeight: 500 }}>
+            View All →
+          </Link>
+        </div>
         {recentJobs.length === 0 ? (
-          <p>No maintenance requests yet.</p>
+          <div style={{ textAlign: 'center', padding: '40px', background: '#f9fafb', borderRadius: '8px' }}>
+            <p style={{ fontSize: '48px', margin: '0 0 16px 0' }}>📋</p>
+            <p style={{ color: '#6b7280', margin: 0 }}>No maintenance requests yet. Create your first request to get started!</p>
+          </div>
         ) : (
           <table>
             <thead>
@@ -202,7 +302,7 @@ function DashboardPage() {
             <tbody>
               {recentJobs.map(job => (
                 <tr key={job.id}>
-                  <td><Link to={`/jobs/${job.id}`}>{job.job_number}</Link></td>
+                  <td><Link to={`/jobs/${job.id}`} style={{ color: '#0066CC', textDecoration: 'none', fontWeight: 500 }}>{job.job_number}</Link></td>
                   <td>{job.title}</td>
                   <td>{job.category_name}</td>
                   <td className={`priority-${job.priority_name.toLowerCase()}`}>{job.priority_name}</td>
@@ -213,9 +313,6 @@ function DashboardPage() {
             </tbody>
           </table>
         )}
-        <Link to="/jobs/new" className="btn btn-primary" style={{ marginTop: '16px' }}>
-          New Maintenance Request
-        </Link>
       </div>
     </div>
   );
@@ -259,11 +356,14 @@ function AppRoutes() {
   return (
     <>
       {user && <Navigation />}
-      <div className="container">
+      <div className={user ? "container" : ""}>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LandingPage />} />
+          <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <LoginPage />} />
+          <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <RegisterPage />} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/jobs" element={<ProtectedRoute><JobsPage /></ProtectedRoute>} />
+          <Route path="/jobs/new" element={<ProtectedRoute><NewJobPage /></ProtectedRoute>} />
         </Routes>
       </div>
     </>
