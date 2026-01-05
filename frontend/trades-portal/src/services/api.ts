@@ -11,9 +11,9 @@ const api: AxiosInstance = axios.create({
 
 // Add token to requests
 api.interceptors.request.use((config) => {
-  const userData = localStorage.getItem('userData')
+  const userData = localStorage.getItem('trades_userData')
   if (userData) {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('trades_token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -26,9 +26,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('userData')
-      localStorage.removeItem('token')
-      window.location.href = '/sign-in'
+      localStorage.removeItem('trades_userData')
+      localStorage.removeItem('trades_token')
+      window.location.href = '/login'
     }
     return Promise.reject(error)
   }

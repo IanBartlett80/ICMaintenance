@@ -10,9 +10,6 @@ interface User {
   first_name: string
   last_name: string
   role: string
-  customerId?: number | null
-  tradeId?: number | null
-  organization_name?: string
 }
 
 interface AuthContextType {
@@ -20,13 +17,11 @@ interface AuthContextType {
   loading: boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => void
-  register: (data: any) => Promise<void>
 }
 
-// Auth Context
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined)
 
-function useAuth() {
+export function useAuth() {
   const context = React.useContext(AuthContext)
   if (!context) {
     throw new Error('useAuth must be used within AuthProvider')
@@ -34,13 +29,12 @@ function useAuth() {
   return context
 }
 
-// Auth Provider
-function AuthProvider({ children }: { children: ReactNode | undefined }) {
+function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const userData = localStorage.getItem('userData')
+    const userData = localStorage.getItem('staff_userData')
     if (userData) {
       setUser(JSON.parse(userData))
     }
@@ -52,8 +46,13 @@ function AuthProvider({ children }: { children: ReactNode | undefined }) {
       const response = await authAPI.login({ email, password })
       const userData = response.data.user
       const token = response.data.token
-      localStorage.setItem('token', token)
-      localStorage.setItem('userData', JSON.stringify(userData))
+      
+      if (userData.role !== 'staff') {
+        throw new Error('Unauthorized: Staff access only')
+      }
+      
+      localStorage.setItem('staff_token', token)
+      localStorage.setItem('staff_userData', JSON.stringify(userData))
       setUser(userData)
     } catch (error) {
       throw error
@@ -61,26 +60,18 @@ function AuthProvider({ children }: { children: ReactNode | undefined }) {
   }
 
   const logout = () => {
-    localStorage.removeItem('userData')
+    localStorage.removeItem('staff_userData')
+    localStorage.removeItem('staff_token')
     setUser(null)
   }
 
-  const register = async (data: any) => {
-    try {
-      await authAPI.register(data)
-    } catch (error) {
-      throw error
-    }
-  }
-
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
-// Protected Route Component
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth()
 
@@ -92,19 +83,16 @@ function ProtectedRoute({ children }: { children: ReactNode }) {
     )
   }
 
-  return user ? <>{children}</> : <Navigate to="/sign-in" />
+  return user ? <>{children}</> : <Navigate to="/login" />
 }
 
-// Lazy load pages
-const LandingPage = React.lazy(() => import('./pages/LandingPage'))
-const SignInPage = React.lazy(() => import('./pages/SignInPage'))
-const RegisterPage = React.lazy(() => import('./pages/RegisterPage'))
+const LoginPage = React.lazy(() => import('./pages/LoginPage'))
 const DashboardPage = React.lazy(() => import('./pages/DashboardPage'))
-const ProfilePage = React.lazy(() => import('./pages/ProfilePage'))
 const JobsPage = React.lazy(() => import('./pages/JobsPage'))
-const QuotesPage = React.lazy(() => import('./pages/QuotesPage'))
+const CustomersPage = React.lazy(() => import('./pages/CustomersPage'))
+const TradesPage = React.lazy(() => import('./pages/TradesPage'))
+const CategoriesPage = React.lazy(() => import('./pages/CategoriesPage'))
 const ReportsPage = React.lazy(() => import('./pages/ReportsPage'))
-const NotificationsPage = React.lazy(() => import('./pages/NotificationsPage'))
 
 function App() {
   return (
@@ -112,22 +100,12 @@ function App() {
       <AuthProvider>
         <React.Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">Loading...</div>}>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route
               path="/dashboard"
               element={
                 <ProtectedRoute>
                   <DashboardPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
                 </ProtectedRoute>
               }
             />
@@ -140,10 +118,26 @@ function App() {
               }
             />
             <Route
-              path="/quotes"
+              path="/customers"
               element={
                 <ProtectedRoute>
-                  <QuotesPage />
+                  <CustomersPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/trades"
+              element={
+                <ProtectedRoute>
+                  <TradesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <ProtectedRoute>
+                  <CategoriesPage />
                 </ProtectedRoute>
               }
             />
@@ -155,14 +149,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/notifications"
-              element={
-                <ProtectedRoute>
-                  <NotificationsPage />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </React.Suspense>
       </AuthProvider>
@@ -171,5 +158,3 @@ function App() {
 }
 
 export default App
-export { useAuth, AuthContext }
-export type { User, AuthContextType }
