@@ -1,25 +1,12 @@
-import React, { useState, useEffect, ReactNode } from 'react'
+import React, { useState, ReactNode } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../App'
-
-interface User {
-  id: string
-  username: string
-  email: string
-  fullName: string
-  role: string
-  clubId?: string
-  clubName?: string
-}
 
 interface DashboardLayoutProps {
   children: ReactNode
   title?: string
   backTo?: { label: string; href: string }
 }
-
-export interface { children }: DashboardLayoutProps;
-DashboardLayout.defaultProps = { children: null };
 
 export default function DashboardLayout({ children, title, backTo }: DashboardLayoutProps) {
   const navigate = useNavigate()

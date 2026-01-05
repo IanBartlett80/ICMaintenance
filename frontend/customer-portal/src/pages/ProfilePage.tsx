@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import DashboardLayout from '../components/DashboardLayout'
 import { useAuth } from '../App'
-
-interface User {
-  id: string
-  username: string
-  email: string
-  fullName: string
-  role: string
-  clubId?: string
-  clubName?: string
-}
 
 interface FormData {
   fullName: string
@@ -22,7 +11,6 @@ interface FormData {
 }
 
 export default function ProfilePage() {
-  const navigate = useNavigate()
   const { user } = useAuth()
   const [formData, setFormData] = useState<FormData>({
     fullName: '',

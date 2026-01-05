@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
-import { jobAPI } from '../services/api'
 
 interface Job {
   id: string

@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react'
 import DashboardLayout from '../components/DashboardLayout'
 
 export default function ReportsPage() {
-  const [reports, setReports] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // TODO: Fetch reports from API
-    setReports([])
     setLoading(false)
   }, [])
 
