@@ -64,13 +64,14 @@ export default function RegisterPage() {
       }
 
       await register({
-        companyName: formData.companyName,
-        contactName: formData.contactName,
         email: formData.email,
-        phone: formData.phone,
-        industry: formData.industry,
-        username: formData.adminUsername,
         password: formData.adminPassword,
+        role: 'customer',
+        first_name: formData.contactName.split(' ')[0] || formData.contactName,
+        last_name: formData.contactName.split(' ').slice(1).join(' ') || '',
+        phone: formData.phone,
+        organization_name: formData.companyName,
+        organization_type: formData.industry,
       })
 
       setSuccess(true)
@@ -94,7 +95,7 @@ export default function RegisterPage() {
 
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-6">
             <p className="text-blue-300 text-sm">
-              Please verify your email address before signing in. Check your inbox for a verification link.
+              Your account has been created successfully. You can now sign in.
             </p>
           </div>
 
@@ -115,8 +116,8 @@ export default function RegisterPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="text-2xl font-bold text-blue-500 hover:text-blue-400 transition">
-            ICMaintenance
+          <Link to="/" className="flex justify-center mb-4 hover:opacity-80 transition">
+            <img src="/ICMaintenance_logo.png" alt="ICMaintenance" className="h-48" />
           </Link>
           <h1 className="text-4xl font-bold text-white mt-4">Register Your Company</h1>
           <p className="text-neutral-400 mt-2">Step {step} of 4</p>
@@ -164,13 +165,14 @@ export default function RegisterPage() {
                   name="industry"
                   value={formData.industry}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg text-white focus:border-blue-500 focus:outline-none [&>option]:bg-neutral-700 [&>option]:text-white"
                   required
                 >
                   <option value="">Select an industry</option>
                   <option value="construction">Construction & Maintenance</option>
                   <option value="facilities">Facilities Management</option>
                   <option value="property">Property Management</option>
+                  <option value="sporting">Sporting Organization</option>
                   <option value="other">Other</option>
                 </select>
               </div>
@@ -302,7 +304,7 @@ export default function RegisterPage() {
 
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
                 <p className="text-blue-300 text-sm">
-                  A verification email will be sent to <strong>{formData.email}</strong>. Please verify your email to activate your account.
+                  Click "Complete Registration" below to create your account. You'll be able to sign in immediately.
                 </p>
               </div>
             </div>

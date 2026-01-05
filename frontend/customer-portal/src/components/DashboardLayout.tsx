@@ -35,8 +35,11 @@ export default function DashboardLayout({ children, title, backTo }: DashboardLa
           to="/dashboard"
           className="flex items-center gap-3 px-6 py-4 border-b border-gray-200 hover:bg-gray-50 transition"
         >
-          <div className="text-2xl font-bold text-blue-600">IC</div>
-          {!sidebarCollapsed && <span className="text-xl font-bold text-gray-900">ICMaintenance</span>}
+          {!sidebarCollapsed ? (
+            <img src="/ICMaintenance_logo.png" alt="ICMaintenance" className="h-28" />
+          ) : (
+            <div className="text-2xl font-bold text-blue-600">IC</div>
+          )}
         </Link>
 
         {/* Navigation */}

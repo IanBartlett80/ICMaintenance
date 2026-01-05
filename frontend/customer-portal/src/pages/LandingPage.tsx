@@ -67,9 +67,6 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <Link to="/" className="text-2xl font-bold text-blue-500 hover:text-blue-400 transition">
-                ICMaintenance
-              </Link>
             </div>
             <div className="flex items-center gap-4">
               <Link
@@ -90,27 +87,30 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="pt-20 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+            <div className="flex justify-center mb-4">
+              <img src="/ICMaintenance_logo.png" alt="ICMaintenance" className="h-40" />
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
               Building Maintenance
               <span className="text-blue-500"> Simplified</span>
             </h1>
-            <p className="text-xl sm:text-2xl text-neutral-300 mb-10 leading-relaxed">
+            <p className="text-lg sm:text-xl text-neutral-300 mb-6 leading-relaxed">
               The all-in-one platform for managing maintenance operations. 
               From request to completion, we've got you covered.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 to="/register"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-bold text-lg transition transform hover:scale-105"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold text-base transition transform hover:scale-105"
               >
                 Start Free Trial
               </Link>
               <Link
                 to="/sign-in"
-                className="bg-neutral-700 hover:bg-neutral-600 text-white px-8 py-4 rounded-lg font-bold text-lg transition transform hover:scale-105"
+                className="bg-neutral-700 hover:bg-neutral-600 text-white px-6 py-3 rounded-lg font-bold text-base transition transform hover:scale-105"
               >
                 View Demo
               </Link>
@@ -118,11 +118,11 @@ export default function LandingPage() {
           </div>
 
           {/* Stats */}
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
-                <div className="text-4xl font-bold text-blue-500 mb-2">{stat.value}</div>
-                <div className="text-neutral-400">{stat.label}</div>
+                <div className="text-3xl font-bold text-blue-500 mb-2">{stat.value}</div>
+                <div className="text-neutral-400 text-sm">{stat.label}</div>
               </div>
             ))}
           </div>
