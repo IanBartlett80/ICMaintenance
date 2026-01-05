@@ -3,7 +3,7 @@ import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../App'
 
 interface FormData {
-  username: string
+  email: string
   password: string
 }
 
@@ -12,7 +12,7 @@ export default function SignInPage() {
   const [searchParams] = useSearchParams()
   const { login } = useAuth()
   const [formData, setFormData] = useState<FormData>({
-    username: '',
+    email: '',
     password: '',
   })
   const [loading, setLoading] = useState(false)
@@ -34,7 +34,7 @@ export default function SignInPage() {
     setError('')
 
     try {
-      await login(formData.username, formData.password)
+      await login(formData.email, formData.password)
       navigate('/dashboard')
     } catch (err: any) {
       const errorMessage = err.response?.data?.error || 'Sign in failed. Please try again.'
@@ -78,17 +78,17 @@ export default function SignInPage() {
           )}
 
           <div>
-            <label htmlFor="username" className="block text-white font-medium mb-2">
-              Username
+            <label htmlFor="email" className="block text-white font-medium mb-2">
+              Email Address
             </label>
             <input
-              id="username"
-              type="text"
-              name="username"
-              value={formData.username}
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleInputChange}
               className="w-full px-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg text-white placeholder-neutral-400 focus:border-blue-500 focus:outline-none transition"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
               required
             />
           </div>

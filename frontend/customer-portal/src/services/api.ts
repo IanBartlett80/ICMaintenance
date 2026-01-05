@@ -36,7 +36,7 @@ api.interceptors.response.use(
 
 // Auth APIs
 export const authAPI = {
-  login: (credentials: { username: string; password: string }): Promise<AxiosResponse> =>
+  login: (credentials: { email: string; password: string }): Promise<AxiosResponse> =>
     api.post('/auth/login', credentials),
   register: (userData: any): Promise<AxiosResponse> =>
     api.post('/auth/register', userData),

@@ -5,19 +5,20 @@ import { authAPI } from './services/api'
 
 // Types
 interface User {
-  id: string
-  username: string
+  id: number
   email: string
-  fullName: string
+  first_name: string
+  last_name: string
   role: string
-  clubId?: string
-  clubName?: string
+  customerId?: number | null
+  tradeId?: number | null
+  organization_name?: string
 }
 
 interface AuthContextType {
   user: User | null
   loading: boolean
-  login: (username: string, password: string) => Promise<void>
+  login: (email: string, password: string) => Promise<void>
   logout: () => void
   register: (data: any) => Promise<void>
 }
@@ -46,10 +47,12 @@ function AuthProvider({ children }: { children: ReactNode | undefined }) {
     setLoading(false)
   }, [])
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     try {
-      const response = await authAPI.login({ username, password })
+      const response = await authAPI.login({ email, password })
       const userData = response.data.user
+      const token = response.data.token
+      localStorage.setItem('token', token)
       localStorage.setItem('userData', JSON.stringify(userData))
       setUser(userData)
     } catch (error) {

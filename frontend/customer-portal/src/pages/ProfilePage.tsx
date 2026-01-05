@@ -3,7 +3,8 @@ import DashboardLayout from '../components/DashboardLayout'
 import { useAuth } from '../App'
 
 interface FormData {
-  fullName: string
+  firstName: string
+  lastName: string
   email: string
   currentPassword: string
   newPassword: string
@@ -13,7 +14,8 @@ interface FormData {
 export default function ProfilePage() {
   const { user } = useAuth()
   const [formData, setFormData] = useState<FormData>({
-    fullName: '',
+    firstName: '',
+    lastName: '',
     email: '',
     currentPassword: '',
     newPassword: '',
@@ -26,7 +28,8 @@ export default function ProfilePage() {
     if (user) {
       setFormData(prev => ({
         ...prev,
-        fullName: user.fullName,
+        firstName: user.first_name,
+        lastName: user.last_name,
         email: user.email,
       }))
     }
@@ -101,44 +104,59 @@ export default function ProfilePage() {
             {/* Personal Details */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                  First Name
                 </label>
                 <input
                   type="text"
-                  id="fullName"
-                  name="fullName"
-                  value={formData.fullName}
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Last Name
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
 
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
             {/* Read-only Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                  Username
+                <label htmlFor="userId" className="block text-sm font-medium text-gray-700 mb-2">
+                  User ID
                 </label>
                 <input
                   type="text"
-                  id="username"
-                  value={user.username}
+                  id="userId"
+                  value={user?.id || ''}
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-500"
                   disabled
                 />

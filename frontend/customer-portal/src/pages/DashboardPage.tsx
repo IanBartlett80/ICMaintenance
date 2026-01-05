@@ -91,7 +91,7 @@ export default function DashboardPage() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome, {user?.fullName}!
+            Welcome, {user?.first_name} {user?.last_name}!
           </h2>
           <p className="text-gray-600">
             Manage your maintenance operations and track jobs efficiently
